@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert, AsyncStorage } from 'react-native';
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 import CustomHeader from '../../components/Header/Header';
 
 export default class PickTime extends Component {
 
     constructor(props) {
+        console.log("[PickTime.js] in constructor");
         super(props);
         this.state = {
             tableHead: ['Start', ' End', 'Confirm'],
             tableData: [
                 ['10.30am', '12.30pm', '4'],
-                ['6.30pm', '7.30pm', 'd'],
+                ['6.30pm', '7.30pm', 'd'], 
                 ['4.00pm', '5.00pm', '4'],
                 ['6.00am', '8.00am', 'd']
             ]
@@ -19,11 +20,42 @@ export default class PickTime extends Component {
     }
 
     summaryHandler = () => {
-        this.props.navigation.navigate('appSummary')
+        console.log("Click Confirm");
+        console.log(this.state.tableData)
+        this.props.navigation.navigate('appSummary');
     }
 
     _alertIndex(index) {
-        Alert.alert(`Time slot is ${index + 1}`);
+        var dataNo=index+1;
+        Alert.alert(`Time slot is ${dataNo}`);
+        if(dataNo === 1){
+            console.log("10.30am");
+            this.setTimeSlot("10.30am");
+        }
+        else if(dataNo === 2){
+            console.log("6.30pm");
+            this.setTimeSlot("6.30pm");
+
+        }
+        else if(dataNo === 3){
+            console.log("4.00pm");
+            this.setTimeSlot("4.00pm");
+        }
+        else if(dataNo === 4){
+            console.log("6.00am");
+            this.setTimeSlot("6.00am");
+        }
+    }
+
+    async setTimeSlot(data){
+        console.log("I am in setTimeSlot "+data);
+        try{
+          await AsyncStorage.setItem("selectTime",data);
+          console.log('selectTime saves asyn');
+          // this.getToken();
+        }catch(error){
+          alert("selectTime store error");
+        }
     }
 
     render() {

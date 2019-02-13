@@ -62,7 +62,7 @@ export default class PickDate extends Component {
 
 
     }
-
+ 
     async setSelectDate(){
         console.log("[PickDate.js] set_select_date ****** "+this.state.selectDate)
         try{

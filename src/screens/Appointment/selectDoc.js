@@ -54,7 +54,7 @@ export default class SelectDoctor extends Component {
         try{
             let field=await AsyncStorage.getItem("field");
             console.log('field get asyn '+field);
-            this.set_field(field)
+            this.set_field(field);
             // this.getToken();
           }catch(error){
             alert("token store error");
@@ -87,7 +87,7 @@ export default class SelectDoctor extends Component {
         if(this.state.field === null){
             var search=''
         }else{
-            var search=this.state.field
+            var search=this.state.field;
         }
 
         // fetch('https://hello-doc-app.herokuapp.com/doctor/viewdoctor/Surgeon',{
@@ -156,9 +156,19 @@ export default class SelectDoctor extends Component {
         this.props.navigation.navigate('PickDateApp')
     }
 
-    docHandler(){
-        console.log("in docHandler");
-        console.log(this.props)
+    async docHandler(data){
+        console.log(data,"in docHandler");
+
+        try{
+            await AsyncStorage.setItem("doctor_reg",data);
+            console.log('doctor_reg saves asyn');
+            // this.getToken();
+          }catch(error){
+            alert("doctor_reg store error");
+          }
+
+        // console.log(this.props);
+        // console.log("[selectDoc.js] ",this.state.doctor_details," **** ")
 
         this.props.navigation.navigate('PickDateApp') 
 
@@ -260,7 +270,7 @@ export default class SelectDoctor extends Component {
                             
 
                             <TouchableOpacity key={key}
-                                    onPress={()=>this.docHandler()}
+                                    onPress={()=>this.docHandler(val.doctorRegNo)}
                                 >
                                  <Card>
                                  <CardItem style={{backgroundColor:"#b3cce6"}}>

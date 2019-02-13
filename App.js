@@ -22,7 +22,7 @@ import ViewPrescription from './src/screens/Prescription/ViewPrescription';
 import ViewDiseaseDescription from './src/screens/Prescription/ViewDiseaseDescription';
 import ViewLabReport from './src/screens/Prescription/ViewLabReport';
 import ViewCurrentState from './src/screens/drawerScreen/currentState/viewState';
-import ViewMenu from './src/screens/Prescription/ViewMenu';
+import ViewMenu from './src/screens/Prescription/ViewMenu'; 
 import AppointmentSummary from './src/screens/Appointment/ViewAppDetails';
 import ForgotPassword from './src/authScreen/forgotPassword/ForgotPassword';
 import AppointmentScreen from './src/screens/tabscreen/appointmentScreen';
