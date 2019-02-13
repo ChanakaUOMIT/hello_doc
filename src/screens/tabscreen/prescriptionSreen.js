@@ -27,6 +27,8 @@ export default class PrescriptionScreen extends Component {
     }
 
     handlePicker = (date) => {
+        console.log(" &&&&&&&&&&&&& "+date)
+        console.log(" %%%%%%%% "+dateToString(date))
         this.setState({
             isVisible: false,
             choosenDate: moment(date).format('MMMM, Do YYYY')
@@ -91,8 +93,38 @@ export default class PrescriptionScreen extends Component {
                         mode={'date'}
                     />
 
+                    {/* <DatePicker
+                            // style={[{width: 200},styles.container]}
+                            // style={{width: 200}}
+                            style={styles.container}
+                            date={this.state.selectDate}
+                            mode="date"
+                            placeholder="select date"
+                            format="YYYY-MM-DD"
+                            // minDate="2019-01-01"
+                            minDate={this.state.currentDate}
+                            maxDate="2019-12-31"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                            // ... You can check the source to find the other keys.
+                            }}
+                            // onDateChange={(date) => {this.setState({currentDate: date})}}
+                            onDateChange={(date) => {this.setState({selectDate: date})}}
+
+                        /> */}
+
                     
-                </View>
+                </View> 
 
             </View>
         )
