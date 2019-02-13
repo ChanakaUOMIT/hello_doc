@@ -25,7 +25,7 @@ export default class AppointmentScreen extends Component {
     selectdocHandler = () => {
         console.log("selectdocHandler in appoiment "+this.state.text);
         this.setField();
-        this.props.navigation.navigate('selectDoc')
+        this.props.navigation.navigate('selectDoc') 
     }
 
     async setField(){

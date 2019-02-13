@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import react in our code. 
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text,AsyncStorage } from 'react-native';
 //import all the components we are going to use.
 import DatePicker from 'react-native-datepicker';
 import CustomHeader from '../../components/Header/Header';
@@ -49,12 +49,13 @@ export default class PickDate extends Component {
 
     }
 
-    setCurrentDate(today){
+    setCurrentDate(today){ 
         console.log(" setCurrentDate "+ today);
 
         // this.state.currentDate=today
         this.setState({
-            currentDate:today
+            currentDate:today,
+            selectDate:today
         })
 
         console.log(" getDate in state "+ this.state.currentDate+ " dfdfd");
@@ -62,7 +63,20 @@ export default class PickDate extends Component {
 
     }
 
+    async setSelectDate(){
+        console.log("[PickDate.js] set_select_date ****** "+this.state.selectDate)
+        try{
+          await AsyncStorage.setItem("selectDate",this.state.selectDate);
+          console.log('selectDate saves asyn');
+          // this.getToken();
+        }catch(error){
+          alert("selectDate store error");
+        }
+    }
+
     picktimeHandler = () => {
+        console.log("[PickDate.js] picktimeHandler "+this.state.currentDate+" *** "+this.state.selectDate);
+        this.setSelectDate();
         this.props.navigation.navigate('PickTimeApp')
     }
 
@@ -82,7 +96,7 @@ export default class PickDate extends Component {
         // style={[{width: 200},styles.container]}
         // style={{width: 200}}
         style={styles.container}
-        date={this.state.currentDate}
+        date={this.state.selectDate}
         mode="date"
         placeholder="select date"
         format="YYYY-MM-DD"
@@ -103,7 +117,9 @@ export default class PickDate extends Component {
           }
           // ... You can check the source to find the other keys.
         }}
-        onDateChange={(date) => {this.setState({currentDate: date})}}
+        // onDateChange={(date) => {this.setState({currentDate: date})}}
+        onDateChange={(date) => {this.setState({selectDate: date})}}
+
       />
 
                 <Text>Date Picker</Text>

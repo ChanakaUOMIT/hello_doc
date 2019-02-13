@@ -82,6 +82,7 @@ export default class SelectDoctor extends Component {
       }
 
     getDoctorDetails(){
+        console.log("[selectDoc.js]")
         console.log("I am in getDoctor Details in select doctor "+this.state.field);
         if(this.state.field === null){
             var search=''
@@ -159,7 +160,7 @@ export default class SelectDoctor extends Component {
         console.log("in docHandler");
         console.log(this.props)
 
-        this.props.navigation.navigate('PickDateApp')
+        this.props.navigation.navigate('PickDateApp') 
 
     }
 
