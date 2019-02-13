@@ -9,6 +9,8 @@ export default class PickTime extends Component {
         console.log("[PickTime.js] in constructor");
         super(props);
         this.state = {
+            data:null,
+            isLoading:true,
             tableHead: ['Start', ' End', 'Confirm'],
             tableData: [
                 ['10.30am', '12.30pm', '4'],
@@ -19,8 +21,59 @@ export default class PickTime extends Component {
         }
     }
 
-    summaryHandler = () => {
+    componentDidMount(){
+        this.getTimeSlot();
+    }
+
+    getTimeSlot(){
+        console.log("getTimeSlot");
+        var url="https://hello-doc-app.herokuapp.com/appschedule/ViewSheduling/8877";
+
+        fetch(url,{
+            method:'GET',
+        })
+        .then((response)=> response.json())
+        // .then((response)=> console.log(response))
+
+        .then((resJson)=>{
+            // console.log(resJson);
+            this.dataHandler(resJson);
+        })
+    }
+
+    dataHandler(data){
+        console.log("[PickTime.js] in dataHandler ",data.data, " ********* ");
+
+        this.setData(data.data)
+        // this.setState({
+        //     data:data.data,
+        //     isLoading:false
+        // });
+
+        // this.setState({ data:data.data});
+
+
+        // console.log("in state data ****** ", this.state.data);
+        // console.log("in state isLoading ****** "+ this.state.isLoading);
+
+    }
+
+    setData(data){
+
+        console.log("setData "+data)
+
+        this.setState({
+            data:data,
+            isLoading:false
+        })
+        console.log("in state data ****** ", this.state.data);
+        console.log("in state isLoading ****** "+ this.state.isLoading);
+    }
+
+    summaryHandler = (time) => {
         console.log("Click Confirm");
+        this.setTimeSlot(time);
+        console.log("summaryHandler "+time)
         console.log(this.state.tableData)
         this.props.navigation.navigate('appSummary');
     }
@@ -59,47 +112,83 @@ export default class PickTime extends Component {
     }
 
     render() {
-        const state = this.state;
-        const element = (data, index) => (
-            <TouchableOpacity onPress={() => this._alertIndex(index)}>
-                <View style={styles.btn}>
-                    <Text style={styles.btnText}>select</Text>
-                </View>
-            </TouchableOpacity>
-        );
-
-        return (
-
-            <View style={styles.tablecontainer}>
-                <CustomHeader
-                    title="Pick Date"
-                    leftPress={() => this.props.navigation.goBack()}
-                    iconNameRight="md-git-network"
-                    iconName="arrow-round-back"
-                    type="sub"
-                />
-                <Table borderStyle={{ borderColor: 'transparent' }}>
-                    <Row data={state.tableHead} style={styles.head} textStyle={styles.text} />
-                    {
-                        state.tableData.map((rowData, index) => (
-                            <TableWrapper key={index} style={styles.row}>
-                                {
-                                    rowData.map((cellData, cellIndex) => (
-                                        <Cell key={cellIndex} data={cellIndex === 2 ? element(cellData, index) : cellData} textStyle={styles.text} />
-                                    ))
-                                }
-                            </TableWrapper>
-                        ))
-                    }
-                </Table>
-
-                <TouchableOpacity onPress={this.summaryHandler} style={styles.button}>
-                    <Text style={styles.buttonText}>Confirm</Text>
-                </TouchableOpacity>
-
+        if(this.state.isLoading){
+            return(
+                <View>
+                <Text>Wait</Text>
             </View>
+            )
+        }
+        else{
 
-        )
+            console.log("Management Student in ***********");
+            let time_slot = this.state.data.map((val, key) =>{
+            return (
+                <View key={key} style={styles.item}>
+                    <TouchableOpacity                        
+                        // onPress={()=>{this.setdata(val.id, val.user_id)}}
+                    >
+                        <Text>Time in : {val.TimeIn}</Text>
+                        <Text>Time out : {val.TimeOut}</Text>
+
+                        <TouchableOpacity onPress={()=>this.summaryHandler(val.TimeIn)} style={styles.button}>
+                            <Text style={styles.buttonText}>Confirm</Text>
+                        </TouchableOpacity>
+
+                    </TouchableOpacity>
+
+                </View>
+                )
+            });
+
+            return (
+                <View style={styles.tablecontainer}>
+                    <CustomHeader
+                        title="Pick Date"
+                        leftPress={() => this.props.navigation.goBack()}
+                        iconNameRight="md-git-network"
+                        iconName="arrow-round-back"
+                        type="sub"
+                    />
+                    {/* <Table borderStyle={{ borderColor: 'transparent' }}>
+                        <Row data={state.tableHead} style={styles.head} textStyle={styles.text} />
+                        {
+                            state.tableData.map((rowData, index) => (
+                                <TableWrapper key={index} style={styles.row}>
+                                    {
+                                        rowData.map((cellData, cellIndex) => (
+                                            <Cell key={cellIndex} data={cellIndex === 2 ? element(cellData, index) : cellData} textStyle={styles.text} />
+                                        ))
+                                    }
+                                </TableWrapper>
+                            ))
+                        }
+                    </Table> */}
+                    {time_slot}
+    
+                    {/* <TouchableOpacity onPress={this.summaryHandler} style={styles.button}>
+                        <Text style={styles.buttonText}>Confirm</Text>
+                    </TouchableOpacity> */}
+    
+                </View>
+    
+            )
+
+        }
+        // const state = this.state;
+        // const element = (data, index) => (
+        //     <TouchableOpacity onPress={() => this._alertIndex(index)}>
+        //         <View style={styles.btn}>
+        //             <Text style={styles.btnText}>select</Text>
+        //         </View>
+        //     </TouchableOpacity>
+        // );
+
+        
+
+        //   console.log(" ((((()))))) "+this.state.data);
+
+        
     }
 }
 

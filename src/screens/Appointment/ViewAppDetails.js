@@ -99,6 +99,59 @@ export default class AppointmentSummary extends Component {
         this.props.navigation.navigate('appback')
     }
 
+    appointmentConfirmHandler=()=>{
+        console.log("appointmentConfirmHandler");
+
+            console.log('appointmentConfirmHandler email get asyn '+this.state.email);
+            console.log('appointmentConfirmHandler selectDate get asyn '+this.state.selectDate);
+            console.log('appointmentConfirmHandler selectTime get asyn '+this.state.selectTime);
+            console.log('appointmentConfirmHandler doctor_reg get asyn '+this.state.doctor_reg);
+        
+        url='https://hello-doc-app.herokuapp.com/appointment/addappointment'; 
+
+        console.log(url);
+
+        fetch(url,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+                
+                // 'X-Requested-With':'XMLHttpRequest'
+            },
+            body:JSON.stringify({
+
+                email:this.state.email,
+                appDate:this.state.selectDate,
+                appTime:this.state.selectTime,
+                doctorRegNo:this.state.doctor_reg
+                
+                // email:"patient@gmail.com",
+                // appDate:"2019-02-11",
+                // appTime:"15.59",
+                // doctorRegNo:"8877"
+                
+            })
+        })
+        .then((response)=> response.json())
+        // .then((response)=> console.log(response))
+
+        .then((resJson)=>{
+            // console.log(resJson);
+            this.dataHandler(resJson);
+        })
+    }
+    dataHandler(data){
+        console.log(" Data ",data);
+        console.log("msg "+data.msg);
+        if(data.msg === "already registerd"){
+            alert("already registerd please try another time slot");
+            this.props.navigation.pop();
+        }
+        else if(data.msg === "Appointment Done"){
+            alert("Appointment Done");
+        }
+    }
+
     render() {
         const state = this.state;
         const { parent, iconimg,iconView } = style
@@ -113,13 +166,13 @@ export default class AppointmentSummary extends Component {
                 />
 
                 <View style={styles.container}>
-                    {/* <Table>
+                    <Table>
                         <Row data={state.tableHead} flexArr={[1, 2, 1, 1]} style={styles.head} textStyle={styles.text} />
                         <TableWrapper style={styles.wrapper}>
                             <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28]} widthArr={[40,60]} textStyle={styles.text} />
                             <Rows data={state.tableData} flexArr={[2, 1, 1]} style={styles.row} textStyle={styles.text} />
                         </TableWrapper>
-                    </Table> */}
+                    </Table>
 
                 <View>
                     <Text>selectDate : {this.state.selectDate}</Text>
@@ -136,6 +189,13 @@ export default class AppointmentSummary extends Component {
                             <Icon name='md-arrow-dropleft-circle' size={40} style={iconimg} />
                         </TouchableOpacity>
                         </View>
+
+                <View>
+                    <TouchableOpacity onPress={this.appointmentConfirmHandler}>
+                        <Text>Confirm !!!</Text>
+                    </TouchableOpacity>
+                </View>
+
             </View>
         )
     }
