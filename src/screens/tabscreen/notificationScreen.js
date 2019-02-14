@@ -13,7 +13,9 @@ import {
 } from 'react-native';
 import CustomHeader from '../../components/Header/Header';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {YellowBox} from 'react-native';
 
+YellowBox.ignoreWarnings(['ListView is deprecated and will be removed in a future release.']);
 export default class NotificationScreen extends Component {
     constructor(props) {
         super(props);
@@ -31,6 +33,8 @@ export default class NotificationScreen extends Component {
                 { day: 9, month: 'May' },
             ]),
         };
+
+        console.ignoredYellowBox
     }
 
     eventClickListener = (viewId) => {
