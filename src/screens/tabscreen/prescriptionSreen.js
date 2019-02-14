@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -34,8 +35,22 @@ export default class PrescriptionScreen extends Component {
            
         })
 
-        console.log(" &&&&&&&&&&&&& "+this.state.choosenDate)
+        console.log(" &&&&&&&&&&&&& "+this.state.choosenDate);
+        var select_prescription_date=moment(date).format('YYYY-MM-DD')
+        console.log(" %%%%%%^^^^%%%%% "+select_prescription_date)
 
+        this.setAsyncselect_prescription_date(select_prescription_date);
+    }
+
+    async setAsyncselect_prescription_date(data){
+        console.log("I am in setTimeSlot "+data);
+        try{
+          await AsyncStorage.setItem("select_prescription_date",data);
+          console.log('select_prescription_date saves asyn');
+          // this.getToken();
+        }catch(error){
+          alert("select_prescription_date store error");
+        }
     }
 
     showPicker = () => {

@@ -33,8 +33,12 @@ export default class ViewPrescription extends Component {
     async getEmail(){
         try{
             let email=await AsyncStorage.getItem("email");
-            console.log("[Viewprescription.js] email : "+email);
-            this.setState({email:email})
+            let s_p_date=await AsyncStorage.getItem("select_prescription_date");
+            console.log("[Viewprescription.js] email : "+email+ "  "+s_p_date);
+            this.setState({
+                email:email,
+                date:s_p_date
+            })
             // this.getToken();
           }catch(error){
             alert("token store error", error);
@@ -65,6 +69,8 @@ export default class ViewPrescription extends Component {
 
     dataHandler(data){
         console.log("in data Handler ",data);
+        console.log("in data Handler length "+data.length);
+
         this.setState({
             // appDate:data.appDate,
             // doctorRegNo:data.doctorRegNo,
@@ -74,7 +80,8 @@ export default class ViewPrescription extends Component {
             // medicineQty:data.medicineQty,
             // recommandedTest:data.recommandedTest
             data:data,
-            isLoading:false
+            isLoading:false,
+            length:data.length
         })
 
         console.log(" ///////||||||||||||");
@@ -95,25 +102,62 @@ export default class ViewPrescription extends Component {
         }else{
             const state = this.state;
             const { parent, signupTxtCont, signupTxt, buttonStyle, nextButton } = style;
+            let count=0;
             let render_content = this.state.data.map((val, key) =>{
-                return (
-                    <View key={key} style={styles.item}>
-                        <TouchableOpacity
-                            // onPress={()=>{this.setdata(val.id, val.user_id)}}
-                        >
-                            <Text>appDate : {val.appDate}</Text>
-                            <Text>doctorRegNo : {val.doctorRegNo}</Text>
-                            <Text>expireDate : {val.expireDate}</Text>
-                            <Text>medicineDosage : {val.medicineDosage}</Text>
-                            <Text>medicineNo : {val.medicineNo}</Text>
-                            <Text>medicineQty : {val.medicineQty}</Text>
-                            <Text>recommandedTest : {val.recommandedTest}</Text>
+                if(val.appDate === this.state.date){
+                    count++;
+                    console.log("Here is count "+count)
+                    // this.setState({
+                    //     count:count
+                    // })
+                    return (
+                        <View key={key} style={styles.item}>
+                            <TouchableOpacity
+                                // onPress={()=>{this.setdata(val.id, val.user_id)}}
+                            >
+                                <Text>appDate : {val.appDate}</Text>
+                                <Text>doctorRegNo : {val.doctorRegNo}</Text>
+                                <Text>expireDate : {val.expireDate}</Text>
+                                <Text>medicineDosage : {val.medicineDosage}</Text>
+                                <Text>medicineNo : {val.medicineNo}</Text>
+                                <Text>medicineQty : {val.medicineQty}</Text>
+                                <Text>recommandedTest : {val.recommandedTest}</Text>
 
 
-                        </TouchableOpacity>
-                    </View>
+                            </TouchableOpacity>
+                        </View>
                 )
+                }
+                else if(count===0){
+                    return(
+                        <View key={key}>
+                            <Text>No more Prescription when you selected Date</Text>
+                        </View>
+                    )
+                }
+                // return (
+                //     <View key={key} style={styles.item}>
+                //         <TouchableOpacity
+                //             // onPress={()=>{this.setdata(val.id, val.user_id)}}
+                //         >
+                //             <Text>appDate : {val.appDate}</Text>
+                //             <Text>doctorRegNo : {val.doctorRegNo}</Text>
+                //             <Text>expireDate : {val.expireDate}</Text>
+                //             <Text>medicineDosage : {val.medicineDosage}</Text>
+                //             <Text>medicineNo : {val.medicineNo}</Text>
+                //             <Text>medicineQty : {val.medicineQty}</Text>
+                //             <Text>recommandedTest : {val.recommandedTest}</Text>
+
+
+                //         </TouchableOpacity>
+                //     </View>
+                // )
               });
+
+            //   this.setState({
+            //       count:count
+            //   })
+
 
             return (
                 // <View style={parent}>
@@ -139,6 +183,10 @@ export default class ViewPrescription extends Component {
                     <ScrollView>
                         {render_content}
                     </ScrollView>
+
+                    {/* <View>
+                        {!this.state.isLoading && this.state.count !==0 ? <View><Text>No more data</Text></View>:null}
+                    </View> */}
     
                     <TouchableOpacity style={buttonStyle} onPress={this.DescHandler}>
                             <Text style={signupTxt}>View Disease Details</Text>
