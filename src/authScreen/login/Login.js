@@ -54,8 +54,8 @@ class Login extends Component {
                 // email:'student@ems.com',
                 // password:'abc123',
                 // remember_me:true
-                email:'patient@gmail.com',
-                password:'1111',
+                // email:'patient@gmail.com',
+                // password:'1111',
                 role:"002"
                 // // remember_me:true
             })
