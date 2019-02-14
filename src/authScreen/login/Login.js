@@ -47,7 +47,7 @@ class Login extends Component {
                 // 'X-Requested-With':'XMLHttpRequest'
             },
             body:JSON.stringify({
-                email:this.state.email,
+                email:this.state.emailAddress,
                 password:this.state.password,
                 // remember_me:true
 
@@ -70,10 +70,11 @@ class Login extends Component {
 
         
 
-        this.props.navigation.navigate('DrewerNav')
+        // this.props.navigation.navigate('DrewerNav')
     }
 
     dataHandler(data){
+        // var success=true;
         console.log(" %%%%%%% dataHandler %%%%%%%%%%");
         console.log("In data Handler in Login ", data);
 
@@ -83,6 +84,7 @@ class Login extends Component {
         //     return
         // }
 
+
         var token=data.token;
         var email=data.email;
         console.log("in dataHandler token "+ token);
@@ -90,6 +92,23 @@ class Login extends Component {
     
         this.setToken(token);
         this.setEmail(email);
+
+        console.log(" #########@@@@@@@@ "+data.msg)
+        var success=data.success
+        console.log("success "+success)
+
+        if(success===undefined){
+            console.log(" (((((((((((()))))))))))))))))) ")
+            // alert("Please check your input")
+            this.props.navigation.navigate('DrewerNav')
+        }else if(!data.success ) {
+            // this.props.navigation.navigate('DrewerNav')
+            alert("Please check your input")
+
+        }
+
+        
+
 
     }
 
