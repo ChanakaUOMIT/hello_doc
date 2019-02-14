@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { View, StyleSheet,TouchableOpacity,Text } from 'react-native';
+import { View, StyleSheet,TouchableOpacity,Text,AsyncStorage } from 'react-native';
 import style from '../../../styles/style';
 import CustomHeader from '../../../components/Header/Header';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
@@ -18,6 +18,62 @@ export default class ViewCurrentState extends Component {
                 ['1']
             ]
         }
+    }
+
+    componentWillMount(){
+        this.getEmail();
+    }
+
+    async getEmail(){
+        try{
+            let email=await AsyncStorage.getItem("email");
+            console.log("[Viewprescription.js] email : "+email);
+            this.setState({email:email})
+            // this.getToken();
+          }catch(error){
+            alert("token store error", error);
+          }
+
+          this.request_details();
+
+    }
+
+    request_details(){
+
+        // var url="https://hello-doc-app.herokuapp.com/currentState/patientviewstatus/patient@gmail.com"
+        var url=`https://hello-doc-app.herokuapp.com/currentState/patientviewstatus/${this.state.email}`;
+        console.log("&&&&&&&&&& "+url+" ******* "+this.state.email)
+
+        fetch(url,{
+            method:'GET',
+        })
+        .then((response)=> response.json())
+        // console.log("hello")
+        // .then((response)=> console.log(" %%%%%%%%%%%%%%% ",response))
+
+        .then((resJson)=>{
+            // console.log(resJson);
+            this.dataHandler(resJson.data);
+        })
+    };
+
+    dataHandler(data){
+        console.log("in data Handler ",data);
+        this.setState({
+            // appDate:data.appDate,
+            // doctorRegNo:data.doctorRegNo,
+            // expireDate:data.expireDate,
+            // medicineDosage:data.medicineDosage,
+            // medicineNo:data.medicineNo,
+            // medicineQty:data.medicineQty,
+            // recommandedTest:data.recommandedTest
+            data:data,
+            isLoading:false
+        })
+
+        console.log(" ///////| View State |||||||||||");
+        console.log(this.state.data)
+        console.log(" ************** ");
     }
 
    

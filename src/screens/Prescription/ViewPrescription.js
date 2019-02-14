@@ -34,6 +34,7 @@ export default class ViewPrescription extends Component {
         try{
             let email=await AsyncStorage.getItem("email");
             console.log("[Viewprescription.js] email : "+email);
+            this.setState({email:email})
             // this.getToken();
           }catch(error){
             alert("token store error", error);
@@ -45,7 +46,9 @@ export default class ViewPrescription extends Component {
 
     request_details(){
 
-        var url="https://hello-doc-app.herokuapp.com/prescription/viewprescription/patient@gmail.com"
+        // var url="https://hello-doc-app.herokuapp.com/prescription/viewprescription/patient@gmail.com"
+        var url=`https://hello-doc-app.herokuapp.com/prescription/viewprescription/${this.state.email}`;
+        console.log("&&&&&&&&&& "+url+" ******* "+this.state.email)
 
         fetch(url,{
             method:'GET',

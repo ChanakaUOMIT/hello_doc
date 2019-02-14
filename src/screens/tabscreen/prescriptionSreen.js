@@ -27,17 +27,21 @@ export default class PrescriptionScreen extends Component {
     }
 
     handlePicker = (date) => {
-        console.log(" &&&&&&&&&&&&& "+date)
-        console.log(" %%%%%%%% "+dateToString(date))
+        // console.log(" %%%%%%%% "+dateToString(date))
         this.setState({
             isVisible: false,
             choosenDate: moment(date).format('MMMM, Do YYYY')
+           
         })
+
+        console.log(" &&&&&&&&&&&&& "+this.state.choosenDate)
+
     }
 
     showPicker = () => {
+        var data=this.state.isVisible;
         this.setState({
-            isVisible: true
+            isVisible: !data
         })
     }
 
